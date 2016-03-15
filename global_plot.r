@@ -3,6 +3,8 @@
 # 3/14/2016
 
 library(ggplot2)
+library(gridExtra)
+
 library(data.table)
 library(lme4)
 library(lmerTest)
@@ -40,15 +42,20 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 p1 = ggplot(dt.all, aes(x = globalID, y = ent)) +
     stat_summary(fun.data = mean_cl_boot, geom = 'ribbon', alpha = .5, aes(fill = corpus)) +
     stat_summary(fun.y = mean, geom = 'line', aes(lty = corpus)) +
-    xlab('global position') + ylab('entropy')
-plot(p1)
+    xlab('global position') + ylab('entropy') + ggtitle('(a)') + 
+    theme(legend.position = 'bottom', plot.title = element_text(size = 12))
 
 p2 = ggplot(dt.all, aes(x = globalID, y = entc)) +
     stat_summary(fun.data = mean_cl_boot, geom = 'ribbon', alpha = .5, aes(fill = corpus)) +
     stat_summary(fun.y = mean, geom = 'line', aes(lty = corpus)) +
-    xlab('global position') + ylab('normalized entropy')
-plot(p2)
+    xlab('global position') + ylab('normalized entropy') + ggtitle('(b)')
 
+lgd = g_legend(p1)
+pdf('ent_vs_global.pdf', 10, 5)
+grid.arrange(arrangeGrob(p1 + theme(legend.position = "none"),
+                        p2 + theme(legend.position = "none"), ncol = 2),
+            lgd, nrow = 2, heights = c(9, 1))
+dev.off()
 
 
 
