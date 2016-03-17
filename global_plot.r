@@ -42,7 +42,8 @@ cbPalette <- c("#999999", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2",
 p1 = ggplot(dt.all, aes(x = globalID, y = ent)) +
     stat_summary(fun.data = mean_cl_boot, geom = 'ribbon', alpha = .5, aes(fill = corpus)) +
     stat_summary(fun.y = mean, geom = 'line', aes(lty = corpus)) +
-    xlab('global position') + ylab('entropy') + ggtitle('(a)') + 
+    xlab('global position') + ylab('entropy') + ggtitle('(a)') +
+    scale_x_continuous(breaks = 1:100) +
     theme(legend.position = 'bottom', plot.title = element_text(size = 12))
 
 p2 = ggplot(dt.all, aes(x = globalID, y = entc)) +
@@ -61,8 +62,23 @@ dev.off()
 
 
 ## linear mixed models
-m1 = lmer(ent ~ globalID + (1|globalID), dt.s)
-summary(m1) # beta = 3.823e-03, t = 4.82***
 
-m1_1 = lmer(ent ~ globalID + (1|globalID), dt.s[globalID > 20,])
-summary(m1_1) # beta = 3.841e-03, t = 5.565***
+# Switchboard
+m1 = lmer(ent ~ globalID + (1|convID), dt.s)
+summary(m1) # beta = 4.225e-03, t = 8.643***
+
+m1_1 = lmer(ent ~ globalID + (1|convID), dt.s[globalID > 10,])
+summary(m1_1) # beta = 3.431e-03, t = 5.974***
+
+m2 = lmer(entc ~ globalID + (1|convID), dt.s)
+summary(m2) # beta = 5.897e-04, t = 9.17***
+
+m2_1 = lmer(entc ~ globalID + (1|convID), dt.s[globalID > 10,])
+summary(m2_1) # beta = 5.093e-04, t = 6.799***
+
+# BNC
+m3 = lmer(ent ~ globalID + (1|convID), dt.b)
+summary(m3) # beta = 1.537e-02, t = 17.15***
+
+m4 = lmer(entc ~ globalID + (1|convID), dt.b)
+summary(m4) # beta = 1.416e-03, t = 15.92***
