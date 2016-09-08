@@ -5,6 +5,7 @@
 library(data.table)
 library(lme4)
 library(lmerTest)
+library(ggplot2)
 
 # read
 df.swbd = readRDS('swbd.leader.new.rds')
@@ -45,13 +46,13 @@ p1 = ggplot(df.all[inTopicID <= 10,], aes(x = inTopicID, y = ent)) +
     stat_summary(fun.y = mean, geom = 'line', aes(lty = group)) +
     stat_summary(fun.y = mean, geom = 'point', aes(shape = group)) +
     scale_x_continuous(breaks = 1:10) +
-    theme(legend.position = c(.8, .15)) +
+    theme(legend.position = c(.75, .2)) +
     xlab('within-episode position') + ylab('entropy') +
     scale_fill_manual(values = c('BNC: initiator' = my_colors[1], 'BNC: responder' = my_colors[1],
         'Switchboard: initiator' = my_colors[2], 'Switchboard: responder' = my_colors[2])) +
     scale_linetype_manual(values = c('BNC: initiator' = 1, 'BNC: responder' = 3, 'Switchboard: initiator' = 1, 'Switchboard: responder' = 3)) +
     scale_shape_manual(values = c('BNC: initiator' = 1, 'BNC: responder' = 1, 'Switchboard: initiator' = 4, 'Switchboard: responder' = 4))
-pdf('e_vs_inPos_role.pdf', 5, 5)
+pdf('e_vs_inPos_role_new.pdf', 4, 4)
 plot(p1)
 dev.off()
 
@@ -60,13 +61,13 @@ p2 = ggplot(df.all[inTopicID <= 10,], aes(x = inTopicID, y = entc)) +
     stat_summary(fun.y = mean, geom = 'line', aes(lty = group)) +
     stat_summary(fun.y = mean, geom = 'point', aes(shape = group)) +
     scale_x_continuous(breaks = 1:10) +
-    theme(legend.position = c(.8, .15)) +
+    theme(legend.position = c(.75, .2)) +
     xlab('within-episode position') + ylab('normalized entropy') +
     scale_fill_manual(values = c('BNC: initiator' = my_colors[1], 'BNC: responder' = my_colors[1],
         'Switchboard: initiator' = my_colors[2], 'Switchboard: responder' = my_colors[2])) +
     scale_linetype_manual(values = c('BNC: initiator' = 1, 'BNC: responder' = 3, 'Switchboard: initiator' = 1, 'Switchboard: responder' = 3)) +
     scale_shape_manual(values = c('BNC: initiator' = 1, 'BNC: responder' = 1, 'Switchboard: initiator' = 4, 'Switchboard: responder' = 4))
-pdf('ne_vs_inPos_role.pdf', 5, 5)
+pdf('ne_vs_inPos_role_new.pdf', 4, 4)
 plot(p2)
 dev.off()
 
